@@ -37,7 +37,7 @@ This software is made available under the Apache version 2.0 license: https://ww
 The software depends on external software and libraries. 
 These external packages are likely to contain other software 
 which may be licenced under other licenses. 
-It is the user's responsibility to ensure that the use of external software and libraries complies with any relevant licenses. This also applies to created Docker images by the user through the usage and/or execution of the Dockerfile, Docker-compose files, and setup scripts provided with this software. A list of used Python libraries can be found in the requirements.txt file
+It is the user's responsibility to ensure that the use of external software and libraries complies with any relevant licenses. A list of used Python libraries can be found in the requirements.txt file
 
 ## Contact
 In case of any ODECT related questions, please reach out to me:
