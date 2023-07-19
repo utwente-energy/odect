@@ -1,0 +1,7 @@
+plotly
+pandas
+numpy
+datetime
+requests
+netCDF4
+lxml
