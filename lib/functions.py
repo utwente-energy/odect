@@ -39,12 +39,12 @@ def aef(s_y, s_m, s_d, e_y, e_m, e_d, key_entsoe, key_knmi):
 
     aef_list = calc_aef(gen, em)  # calculate Average Emission Factor data
 
-    s_date = dt.datetime(int(s_y), int(s_m), int(s_d))  # encode start datetime
-    e_date = dt.datetime(int(e_y), int(e_m), int(e_d))  # encode end datetime
+    s_date = dt.datetime(int(s_y), int(s_m), int(s_d), tzinfo=dt.timezone.utc)  # encode start datetime
+    e_date = dt.datetime(int(e_y), int(e_m), int(e_d), tzinfo=dt.timezone.utc)  # encode end datetime
     date = s_date  # set initial value of date variable
     date_list = []  # make empty list
     for i in range(1, (int((e_date-s_date).days)+1)*24+1):  # for all days between start date and end date
-        date_list.append(date.strftime('%Y-%m-%d %H:%M'))  # add date to date_list
+        date_list.append(date.astimezone(dt.timezone.utc).strftime('%Y-%m-%d %H:%M'))  # add date to date_list
         date = date + dt.timedelta(hours=1)  # add 1 day to date variable
 
     # refactor dataframes before returning
@@ -82,13 +82,15 @@ def fetch_gen(s_y, s_m, s_d, e_y, e_m, e_d, key_entsoe, key_knmi):
         dbgen.to_csv(database_file)  # Save new Database_Generation.csv
 
     gen = pd.read_csv(database_file)  # read generation data
-    s_date = dt.datetime(int(s_y), int(s_m), int(s_d))  # encode start datetime
-    e_date = dt.datetime(int(e_y), int(e_m), int(e_d))  # encode end datetime
+    s_date = dt.datetime(int(s_y), int(s_m), int(s_d), tzinfo=dt.timezone.utc)  # encode start datetime
+    e_date = dt.datetime(int(e_y), int(e_m), int(e_d), tzinfo=dt.timezone.utc)  # encode end datetime
     date = s_date  # set initial value of date variable
     date_list = []  # make empty list
     for i in range(1, int((e_date-s_date).days)+2):  # for all days between start date and end date
-        date_list.append(date.strftime('%Y-%m-%d %H:%M'))  # add date to date_list
+        date_list.append(date.astimezone(dt.timezone.utc).strftime('%Y-%m-%d %H:%M'))  # add date to date_list
         date = date + dt.timedelta(days=1)  # add 1 day to date variable
+		
+    print(date_list)
 
     for date in date_list:
         if date in gen['datetime'].values:  # check if selected date is present in csv

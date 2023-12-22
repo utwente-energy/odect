@@ -29,20 +29,25 @@ def fetch_generation(date, zone_code, key_entsoe):
     proc_type = 'A16'
     bid_zone = zone_code  # ENTSO-e code of the bidding zone
 
-    date = dt.datetime.strptime(date, '%Y-%m-%d %H:%M')
+    date = dt.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')
     date_initial = date
 
-    y = date.strftime('%Y')
-    m = date.strftime('%m')
-    d = date.strftime('%d')
+    y = date.astimezone(dt.timezone.utc).strftime('%Y')
+    m = date.astimezone(dt.timezone.utc).strftime('%m')
+    d = date.astimezone(dt.timezone.utc).strftime('%d')
 
     date_min1 = date - dt.timedelta(days=1)
-    y_m1 = date_min1.strftime('%Y')
-    m_m1 = date_min1.strftime('%m')
-    d_m1 = date_min1.strftime('%d')
+    y_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%Y')
+    m_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%m')
+    d_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%d')
+	
+    date_plus1 = date + dt.timedelta(days=1)
+    y_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%Y')
+    m_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%m')
+    d_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%d')
 
-    per_start = f'{y_m1}{m_m1}{d_m1}2200'
-    per_end = f'{y}{m}{d}2200'
+    per_start = f'{y}{m}{d}0000'
+    per_end = f'{y_p1}{m_p1}{d_p1}0000'
 
     if bid_zone == '10Y1001A1001A82H':
         if int(per_end) <= 201809302200:  # and date is earlier than 1-10-2018
@@ -151,7 +156,7 @@ def fetch_generation(date, zone_code, key_entsoe):
     date_list = []
     date = date_initial
     for i in range(time_points):
-        date_list.append(date.strftime('%Y-%m-%d %H:%M'))
+        date_list.append(date.astimezone(dt.timezone.utc).strftime('%Y-%m-%d %H:%M'))
         date = date + dt.timedelta(minutes=1440/time_points)
     df['datetime'] = date_list
     df = df.set_index('datetime')
@@ -159,14 +164,14 @@ def fetch_generation(date, zone_code, key_entsoe):
     date_list = []
     date = date_initial
     date_time = pd.DataFrame()
-    for i in range(time_points):
-        date_list.append(date.strftime('%Y-%m-%d %H:%M'))
+    for i in range(24):
+        date_list.append(date.astimezone(dt.timezone.utc).strftime('%Y-%m-%d %H:%M'))
         date = date + dt.timedelta(minutes=60)
     date_time['datetime'] = date_list
     df = date_time.merge(df, how='inner', on='datetime')
     df = df.set_index('datetime')
     # df = df.drop(columns=['datetime'])
-    print(f'Generation data   {zone_code}   {date_initial.strftime("%Y-%m-%d")}')
+    print(f'Generation data   {zone_code}   {date_initial.astimezone(dt.timezone.utc).strftime("%Y-%m-%d")}')
     return df
 
 
@@ -175,18 +180,23 @@ def fetch_import(date, key_entsoe):
     doc_type = "A11"
     in_dom = '10YNL----------L'
     sec_token = key_entsoe
-    date = dt.datetime.strptime(date, '%Y-%m-%d %H:%M')
-    y = date.strftime('%Y')
-    m = date.strftime('%m')
-    d = date.strftime('%d')
+    date = dt.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')
+    y = date.astimezone(dt.timezone.utc).strftime('%Y')
+    m = date.astimezone(dt.timezone.utc).strftime('%m')
+    d = date.astimezone(dt.timezone.utc).strftime('%d')
 
     date_min1 = date - dt.timedelta(days=1)
-    y_m1 = date_min1.strftime('%Y')
-    m_m1 = date_min1.strftime('%m')
-    d_m1 = date_min1.strftime('%d')
+    y_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%Y')
+    m_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%m')
+    d_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%d')
+	
+    date_plus1 = date + dt.timedelta(days=1)
+    y_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%Y')
+    m_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%m')
+    d_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%d')
 
-    per_start = f'{y_m1}{m_m1}{d_m1}2200'
-    per_end = f'{y}{m}{d}2200'
+    per_start = f'{y}{m}{d}0000'
+    per_end = f'{y_p1}{m_p1}{d_p1}0000'
 
     print(per_start, per_end)
 
@@ -231,7 +241,7 @@ def fetch_import(date, key_entsoe):
             date_list = []
             date_var = date
             for i in range(int(1440/d_min)):
-                date_list.append(date_var.strftime('%Y-%m-%d %H:%M'))
+                date_list.append(date_var.astimezone(dt.timezone.utc).strftime('%Y-%m-%d %H:%M'))
                 date_var = date_var + dt.timedelta(minutes=d_min)
             try:
                 entry['datetime'] = date_list
@@ -246,7 +256,7 @@ def fetch_import(date, key_entsoe):
                 df_main = entry
             else:
                 df_main = entry.merge(df_main, how='inner', on='datetime')
-            print(f'Import data   {out_dom}   {date.strftime("%Y-%m-%d")}')
+            print(f'Import data   {out_dom}   {date.astimezone(dt.timezone.utc).strftime("%Y-%m-%d")}')
     df = df_main
     names = {'10YBE----------2': 'im_BE', '10Y1001A1001A82H': 'im_DE', '10YDK-1--------W': 'im_DK', '10YGB----------A': 'im_GB', '10YNO-2--------T': 'im_NO', '10Y1001A1001A63L': 'im_DE'}
     df = df.rename(columns=names)

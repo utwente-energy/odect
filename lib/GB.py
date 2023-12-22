@@ -20,10 +20,10 @@ import os
 
 
 def fetch_gb_generation(date):
-	date = dt.datetime.strptime(date, '%Y-%m-%d %H:%M')
-	year = date.strftime('%Y')
-	month = date.strftime('%m')
-	day = date.strftime('%d')
+	date = dt.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')
+	year = date.astimezone(dt.timezone.utc).strftime('%Y')
+	month = date.astimezone(dt.timezone.utc).strftime('%m')
+	day = date.astimezone(dt.timezone.utc).strftime('%d')
 	date_str = f'{year}-{month}-{day} 23:00'
 	filename = 'data/Database_GB_Generation.csv'
 	exists = os.path.exists(filename)
@@ -78,7 +78,7 @@ def fetch_gb_generation(date):
 	date_var = date_initial
 	date_list = []
 	for i in range(24):
-		date_list.append(date_var.strftime('%Y-%m-%d %H:%M'))  # create date_list with the queried data and every hour of the day
+		date_list.append(date_var.astimezone(dt.timezone.utc).strftime('%Y-%m-%d %H:%M'))  # create date_list with the queried data and every hour of the day
 		date_var = date_var + dt.timedelta(hours=1)
 
 	gb_gen = gb_gen.loc[gb_gen.index.isin(date_list)]  # select rows within date_list

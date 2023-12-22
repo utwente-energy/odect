@@ -24,28 +24,28 @@ import os
 
 
 def fetch_wind(date, key_knmi):
-	date = dt.datetime.strptime(date, '%Y-%m-%d %H:%M')	 # decode date as datetime
-	y = date.strftime(f'%Y')  # select year
-	m = date.strftime(f'%m')  # select month
-	d = date.strftime(f'%d')  # select day
+	date = dt.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')	 # decode date as datetime
+	y = date.astimezone(dt.timezone.utc).strftime(f'%Y')  # select year
+	m = date.astimezone(dt.timezone.utc).strftime(f'%m')  # select month
+	d = date.astimezone(dt.timezone.utc).strftime(f'%d')  # select day
 	delta = dt.timedelta(minutes=60)  # set hourly interval
 
 	date_var = date	 # set initial value for date_var
 	df = pd.DataFrame()	 # create empty dataframe
 	date_list = []	# create empty list
 	for i in range(24):	 # run loops 24 times
-		y = date_var.strftime(f'%Y')  # select year
-		m = date_var.strftime(f'%m')  # select month
-		d = date_var.strftime(f'%d')  # select day
-		h = date_var.strftime(f'%H')
+		y = date_var.astimezone(dt.timezone.utc).strftime(f'%Y')  # select year
+		m = date_var.astimezone(dt.timezone.utc).strftime(f'%m')  # select month
+		d = date_var.astimezone(dt.timezone.utc).strftime(f'%d')  # select day
+		h = date_var.astimezone(dt.timezone.utc).strftime(f'%H')
 		date2 = date_var - dt.timedelta(minutes=120)
-		y2 = date2.strftime(f'%Y')	# select year
-		m2 = date2.strftime(f'%m')	# select month
-		d2 = date2.strftime(f'%d')	# select day
-		h2 = date2.strftime(f'%H')
+		y2 = date2.astimezone(dt.timezone.utc).strftime(f'%Y')	# select year
+		m2 = date2.astimezone(dt.timezone.utc).strftime(f'%m')	# select month
+		d2 = date2.astimezone(dt.timezone.utc).strftime(f'%d')	# select day
+		h2 = date2.astimezone(dt.timezone.utc).strftime(f'%H')
 		wind = knmi_ir(y2, m2, d2, h2, 'wind', y, m, d, h, key_knmi)  # fetch file from KNMI
 		df = pd.concat([df, wind])	# add data from KNMI to dataframe
-		date_list.append(date_var.strftime('%Y-%m-%d %H:%M'))  # add date to date_list
+		date_list.append(date_var.astimezone(dt.timezone.utc).strftime('%Y-%m-%d %H:%M'))  # add date to date_list
 		date_var = date_var + delta	 # increase date_var with delta
 	wind_df = df
 	wind_df.to_csv('data/wind_df.csv')
@@ -116,28 +116,28 @@ def fetch_wind(date, key_knmi):
 
 
 def fetch_pv(date, key_knmi):
-	date = dt.datetime.strptime(date, '%Y-%m-%d %H:%M')	 # decode date as datetime
-	y = date.strftime(f'%Y')  # select year
-	m = date.strftime(f'%m')  # select month
-	d = date.strftime(f'%d')  # select day
+	date = dt.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')	 # decode date as datetime
+	y = date.astimezone(dt.timezone.utc).strftime(f'%Y')  # select year
+	m = date.astimezone(dt.timezone.utc).strftime(f'%m')  # select month
+	d = date.astimezone(dt.timezone.utc).strftime(f'%d')  # select day
 	delta = dt.timedelta(minutes=60)  # set hourly interval
 
 	date_var = date	 # set initial value for date_var
 	df = pd.DataFrame()	 # create empty dataframe
 	date_list = []	# create empty list
 	for i in range(24):	 # run loops 24 times
-		y = date_var.strftime(f'%Y')  # select year
-		m = date_var.strftime(f'%m')  # select month
-		d = date_var.strftime(f'%d')  # select day
-		h = date_var.strftime(f'%H')
+		y = date_var.astimezone(dt.timezone.utc).strftime(f'%Y')  # select year
+		m = date_var.astimezone(dt.timezone.utc).strftime(f'%m')  # select month
+		d = date_var.astimezone(dt.timezone.utc).strftime(f'%d')  # select day
+		h = date_var.astimezone(dt.timezone.utc).strftime(f'%H')
 		date2 = date_var - dt.timedelta(minutes=120)
-		y2 = date2.strftime(f'%Y')	# select year
-		m2 = date2.strftime(f'%m')	# select month
-		d2 = date2.strftime(f'%d')	# select day
-		h2 = date2.strftime(f'%H')
+		y2 = date2.astimezone(dt.timezone.utc).strftime(f'%Y')	# select year
+		m2 = date2.astimezone(dt.timezone.utc).strftime(f'%m')	# select month
+		d2 = date2.astimezone(dt.timezone.utc).strftime(f'%d')	# select day
+		h2 = date2.astimezone(dt.timezone.utc).strftime(f'%H')
 		irr = knmi_ir(y2, m2, d2, h2, 'pv', y, m, d, h, key_knmi)  # fetch file from KNMI
 		df = pd.concat([df, irr])  # add data from KNMI to dataframe
-		date_list.append(date_var.strftime('%Y-%m-%d %H:%M'))  # add date to date_list
+		date_list.append(date_var.astimezone(dt.timezone.utc).strftime('%Y-%m-%d %H:%M'))  # add date to date_list
 		date_var = date_var + delta	 # increase date_var with delta
 	pv_irr = df
 	pv_irr.to_csv('data/pv_irr.csv')
