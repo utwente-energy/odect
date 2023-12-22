@@ -25,7 +25,7 @@ def fetch_gb_generation(date):
 	month = date.strftime('%m')
 	day = date.strftime('%d')
 	date_str = f'{year}-{month}-{day} 23:00'
-	filename = 'Database_GB_Generation.csv'
+	filename = 'data/Database_GB_Generation.csv'
 	exists = os.path.exists(filename)
 
 	if exists:	# Check if Database_GB_Generation.csv is present

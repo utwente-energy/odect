@@ -48,7 +48,7 @@ def fetch_wind(date, key_knmi):
 		date_list.append(date_var.strftime('%Y-%m-%d %H:%M'))  # add date to date_list
 		date_var = date_var + delta	 # increase date_var with delta
 	wind_df = df
-	wind_df.to_csv('wind_df.csv')
+	wind_df.to_csv('data/wind_df.csv')
 
 	cap_onshore = {'DR': [222],	 # capacity of onshore wind turbines in MW https://opendata.cbs.nl/#/CBS/nl/dataset/70960ned/table
 				   'FL': [1351],
@@ -140,7 +140,7 @@ def fetch_pv(date, key_knmi):
 		date_list.append(date_var.strftime('%Y-%m-%d %H:%M'))  # add date to date_list
 		date_var = date_var + delta	 # increase date_var with delta
 	pv_irr = df
-	pv_irr.to_csv('pv_irr.csv')
+	pv_irr.to_csv('data/pv_irr.csv')
 
 	# set installed PV capacity per province [MWp]
 	cap_total = {'DR': [1065],
@@ -195,8 +195,8 @@ def fetch_pv(date, key_knmi):
 	pv_n = 0.836  # 1 - all system and placement losses, 16.4 percent in calibration with cbs data
 	pvro = pvro.mul(pv_n)  # multiply by PV_n to account for losses
 	pvfi = pvfi.mul(pv_n)
-	pvro.to_csv('pvro.csv')
-	pvfi.to_csv('pvfi.csv')
+	pvro.to_csv('data/pvro.csv')
+	pvfi.to_csv('data/pvfi.csv')
 	df = pd.DataFrame()	 # create empty dataframe
 	df['PVRO_NL'] = pvro.sum(axis=1)  # sum generation over all provinces to obtain national generation
 	df['PVFI_NL'] = pvfi.sum(axis=1)
@@ -217,7 +217,7 @@ def knmi_ir(y, m, d, h, tech, y2, m2, d2, h2, key_knmi):
 	# fetching temporary Download URL
 	endpoint = f"{api_url}/{api_version}/datasets/{dataset_name}/versions/{dataset_version}/files/{filename}/url"
 
-	folder = 'KNMI_data'
+	folder = 'data/KNMI_data'
 	if not os.path.exists(folder):	# check if folder exists
 	   os.makedirs(folder)	# make new folder
 
@@ -252,7 +252,7 @@ def knmi_ir(y, m, d, h, tech, y2, m2, d2, h2, key_knmi):
 		try:
 			with requests.get(download_url, stream=True) as r:
 				r.raise_for_status()
-				with open(f'KNMI_Data/{filename}', "wb") as f:	# create new file in folder
+				with open(f'data/KNMI_Data/{filename}', "wb") as f:	# create new file in folder
 					for chunk in r.iter_content(chunk_size=8192):
 						f.write(chunk)	# write file per chunk
 		except Exception:
@@ -260,7 +260,7 @@ def knmi_ir(y, m, d, h, tech, y2, m2, d2, h2, key_knmi):
 			sys.exit(1)
 		print(f'Weather data   NL	{y2}-{m2}-{d2} {h2}:00')
 
-	ds = nc.Dataset(f'KNMI_Data/{filename}')  # Converting download .nc file into dataframe
+	ds = nc.Dataset(f'data/KNMI_Data/{filename}')  # Converting download .nc file into dataframe
 
 	if tech == 'pv':
 		var_name = 'qg'	 # qg is the name for the irradiation column in KNMI data

@@ -28,7 +28,7 @@ found in the requirements.txt file.
 
 Install the dependencies: python -m pip install -r requirements.txt
 
-Insert personal API keys for ENTSO-e and KNMI databases in main.py
+Copy the template settings.py.example and rename into settings.py. Then insert personal API keys for ENTSO-e and KNMI databases in settings/config.py.
 
 ## License
 

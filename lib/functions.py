@@ -21,13 +21,13 @@ import plotly.graph_objects as go
 import os
 
 # import fetch functions
-from ENTSOE import fetch_generation, fetch_import
-from GB import fetch_gb_generation
-from KNMI import fetch_pv, fetch_wind
+from lib.ENTSOE import fetch_generation, fetch_import
+from lib.GB import fetch_gb_generation
+from lib.KNMI import fetch_pv, fetch_wind
 
 
 def aef(s_y, s_m, s_d, e_y, e_m, e_d, key_entsoe, key_knmi):
-    ef = pd.read_csv('Emission_Factors.csv')  # read emission factors
+    ef = pd.read_csv('settings/Emission_Factors.csv')  # read emission factors
     gen_i = fetch_gen(s_y, s_m, s_d, e_y, e_m, e_d, key_entsoe, key_knmi)  # collect generation data
 
     gen = pd.DataFrame()
@@ -65,7 +65,7 @@ def aef(s_y, s_m, s_d, e_y, e_m, e_d, key_entsoe, key_knmi):
 
 
 def fetch_gen(s_y, s_m, s_d, e_y, e_m, e_d, key_entsoe, key_knmi):
-    database_file = 'Database_Generation_Alt.csv'
+    database_file = 'data/Database_Generation_Alt.csv'
     exists = os.path.exists(database_file)
 
     if exists:  # Check if Database_Generation.csv is present

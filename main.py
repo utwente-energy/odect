@@ -13,16 +13,23 @@
 # limitations under the License.
 
 import pandas as pd
-from functions import aef, figure
+import os
+
+from lib.functions import aef, figure
 
 # Import the config
 try:
-	from config import odect_settings
+	from settings.config import odect_settings
 	key_knmi 	= odect_settings['api_knmi']
 	key_entsoe 	= odect_settings['api_entsoe']
 except:
 	print("No valid config found! Please rename the config.py.example file to config.py and enter yourt API keys")
 	exit()
+	
+# Create folder to store data
+folder = 'data/'
+if not os.path.exists(folder):	# check if folder exists
+	os.makedirs(folder)	# make new folder
 
 
 # define start date (Due to daily publication of weather data, the model works up to yesterday)
