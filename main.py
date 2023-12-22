@@ -1,4 +1,4 @@
-# Copyright 2023 Bas Jansen
+# Copyright 2023 Bas Jansen, Gerwin Hoogsteen
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,17 +15,24 @@
 import pandas as pd
 from functions import aef, figure
 
-key_entsoe = <"API KEY">  # personal security token of ENTSO-e https://transparency.entsoe.eu/content/static_content/download?path=/Static%20content/API-Token-Management.pdf
-key_knmi = <"API KEY">  # personal security token of KNMI https://developer.dataplatform.knmi.nl/get-started#obtain-an-api-key
+# Import the config
+try:
+	from config import odect_settings
+	key_knmi 	= odect_settings['api_knmi']
+	key_entsoe 	= odect_settings['api_entsoe']
+except:
+	print("No valid config found! Please rename the config.py.example file to config.py and enter yourt API keys")
+	exit()
+
 
 # define start date (Due to daily publication of weather data, the model works up to yesterday)
 s_y = '2023'  # year (yy)
-s_m = '07'  # month (mm)
-s_d = '18'  # day (dd)
+s_m = '12'  # month (mm)
+s_d = '20'  # day (dd)
 # define end date
 e_y = '2023'  # year (yy)
-e_m = '09'  # month (mm)
-e_d = '16'  # day (dd)
+e_m = '12'  # month (mm)
+e_d = '21'  # day (dd)
 
 aef, em, gen = aef(s_y, s_m, s_d, e_y, e_m, e_d, key_entsoe, key_knmi)
 
