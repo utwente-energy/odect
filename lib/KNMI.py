@@ -43,7 +43,7 @@ def fetch_wind(date, key_knmi):
 		m2 = date2.astimezone(dt.timezone.utc).strftime(f'%m')	# select month
 		d2 = date2.astimezone(dt.timezone.utc).strftime(f'%d')	# select day
 		h2 = date2.astimezone(dt.timezone.utc).strftime(f'%H')
-		wind = knmi_ir(y2, m2, d2, h2, 'wind', y, m, d, h, key_knmi)  # fetch file from KNMI
+		#wind = knmi_ir(y2, m2, d2, h2, 'wind', y, m, d, h, key_knmi)  # fetch file from KNMI
 		wind = knmi_ir(y, m, d, h, 'wind', y, m, d, h, key_knmi)  # fetch file from KNMI
 		df = pd.concat([df, wind])	# add data from KNMI to dataframe
 		date_list.append(date_var.astimezone(dt.timezone.utc).strftime('%Y-%m-%d %H:%M'))  # add date to date_list
@@ -136,7 +136,7 @@ def fetch_pv(date, key_knmi):
 		m2 = date2.astimezone(dt.timezone.utc).strftime(f'%m')	# select month
 		d2 = date2.astimezone(dt.timezone.utc).strftime(f'%d')	# select day
 		h2 = date2.astimezone(dt.timezone.utc).strftime(f'%H')
-		irr = knmi_ir(y2, m2, d2, h2, 'pv', y, m, d, h, key_knmi)  # fetch file from KNMI
+		#irr = knmi_ir(y2, m2, d2, h2, 'pv', y, m, d, h, key_knmi)  # fetch file from KNMI
 		irr = knmi_ir(y, m, d, h, 'pv', y, m, d, h, key_knmi)  # fetch file from KNMI
 		df = pd.concat([df, irr])  # add data from KNMI to dataframe
 		date_list.append(date_var.astimezone(dt.timezone.utc).strftime('%Y-%m-%d %H:%M'))  # add date to date_list
