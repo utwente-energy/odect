@@ -30,6 +30,26 @@ Install the dependencies: python -m pip install -r requirements.txt
 
 Copy the template settings.py.example and rename into settings.py. Then insert personal API keys for ENTSO-e and KNMI databases in settings/config.py.
 
+## Running
+
+The software can be run by executing main.py with the following flags:
+
+```
+python main.py
+-s, --start: Start date in YYYYMMDD
+-e, --end: End date in YYYYMMDD
+-g, --graphs: Plots graphs
+-j, --json: outputs emissions in JSON
+-d, --influxdb: Writes output to an Influx 1.x database as specified in the config
+--prune: Prunes the data folder to start clean
+```
+
+Usage example:
+```
+python main.py -s 20230314 -e 20231212 -g
+```
+
+
 ## License
 
 This software is made available under the Apache version 2.0 license: https://www.apache.org/licenses/LICENSE-2.0
