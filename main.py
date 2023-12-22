@@ -71,13 +71,13 @@ if args.start is not None or args.end is not None:
 # If dates not specified, then we take the last n days by default
 else:
 	# Start
-	date = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=n_days)	 # decode date as datetime
+	date = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=odect_settings['n_days'])	 # decode date as datetime
 	s_y = date.strftime(f'%Y')  # select year
 	s_m = date.strftime(f'%m')  # select month
 	s_d = date.strftime(f'%d')  # select day
 
 	# End
-	date = datetime.datetime.now(datetime.timezone.utc)	 # decode date as datetime
+	date = datetime.datetime.now(datetime.timezone.utc)	- datetime.timedelta(days=1) # decode date as datetime
 	e_y = date.strftime(f'%Y')  # select year
 	e_m = date.strftime(f'%m')  # select month
 	e_d = date.strftime(f'%d')  # select day
