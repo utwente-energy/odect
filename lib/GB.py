@@ -24,7 +24,7 @@ def fetch_gb_generation(date):
 	year = date.astimezone(dt.timezone.utc).strftime('%Y')
 	month = date.astimezone(dt.timezone.utc).strftime('%m')
 	day = date.astimezone(dt.timezone.utc).strftime('%d')
-	date_str = f'{year}-{month}-{day} 23:00'
+	date_str = f'{year}-{month}-{day} 00:00'
 	filename = 'data/Database_GB_Generation.csv'
 	exists = os.path.exists(filename)
 
@@ -45,7 +45,7 @@ def fetch_gb_generation(date):
 		df['DATETIME'] = pd.to_datetime(df['DATETIME'], format='%Y-%m-%d %H:%M:%S+00:00')  # change column into datetime
 	except:
 		df['DATETIME'] = pd.to_datetime(df['DATETIME'], format='%Y-%m-%d %H:%M:%S+00')	# change column into datetime
-	df['DATETIME'] = df['DATETIME'].dt.strftime('%Y-%m-%d %H:%M')  # change datetime format
+	df['DATETIME'] = df['DATETIME'].dt.strftime('%Y-%m-%d %H:%M%z')  # change datetime format
 
 	if date_str in df.DATETIME.values:	# check if date_str is already present in the database file
 		print(f'British data for {date_str} already in database, skipping download')
