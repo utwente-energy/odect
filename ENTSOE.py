@@ -1,4 +1,5 @@
 # Copyright 2023 Bas Jansen
+# Copyright 2023 University of Twente
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -209,12 +210,11 @@ def fetch_import(date, key_entsoe):
                     d_min = 15
 
             if out_dom == '10YGB----------A': # Don't include GB for data before 1-1-2022 the data was hourly. Same for DE before 1-8-2021
-                if int(per_start) >= 202112312200:  # and date is 1-1-2022 or later
+                if int(per_start) >=  202112312200:  # and date is 1-1-2022 or later
                     d_min = 15
 
             link = f'{api_adress}securityToken={sec_token}&documentType={doc_type}&in_Domain={in_dom}&out_Domain={out_dom}&periodStart={per_start}&periodEnd={per_end}'
             # receive response and load xml
-            #print(link)
             response = rq.get(link)
             xmltext = response.text
             root = et.fromstring(xmltext)
@@ -222,6 +222,7 @@ def fetch_import(date, key_entsoe):
             # create dataframe from xml
             no_p = len(root[9][6].findall('{urn:iec62325.351:tc57wg16:451-3:publicationdocument:7:0}Point'))
             entry = pd.DataFrame(columns=[out_dom])
+            
             for a in range(2, (no_p + 2)):
                 # pos = root[9][6][a][0].text
                 qua = root[9][6][a][1].text
@@ -232,7 +233,14 @@ def fetch_import(date, key_entsoe):
             for i in range(int(1440/d_min)):
                 date_list.append(date_var.strftime('%Y-%m-%d %H:%M'))
                 date_var = date_var + dt.timedelta(minutes=d_min)
-            entry['datetime'] = date_list
+            try:
+                entry['datetime'] = date_list
+            except:
+                print(f'WARNING: Missing Data Found in cross-border exchange with zone {out_dom}. Appending missing values to timeseries as 0')
+                i = len(entry)
+                while(len(entry) < len(date_list)):
+                    entry.loc[len(entry)] = 0
+                entry['datetime'] = date_list
 
             if out_dom == '10YGB----------A':
                 df_main = entry

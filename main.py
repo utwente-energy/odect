@@ -24,8 +24,8 @@ s_m = '07'  # month (mm)
 s_d = '18'  # day (dd)
 # define end date
 e_y = '2023'  # year (yy)
-e_m = '07'  # month (mm)
-e_d = '18'  # day (dd)
+e_m = '09'  # month (mm)
+e_d = '16'  # day (dd)
 
 aef, em, gen = aef(s_y, s_m, s_d, e_y, e_m, e_d, key_entsoe, key_knmi)
 
