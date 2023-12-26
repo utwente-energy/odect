@@ -54,6 +54,7 @@ def fetch_gb_generation(date):
 	if date_str in df.DATETIME.values:	# check if date_str is already present in the database file
 		print(f'British data for {date_str} already in database, skipping download')
 	else:  # download new file
+		# Source: https://www.nationalgrideso.com/data-portal/historic-generation-mix
 		print('Downloading British generation data')
 		url = 'https://data.nationalgrideso.com/backend/dataset/88313ae5-94e4-4ddc-a790-593554d8c6b9/resource/f93d1835-75bc-43e5-84ad-12472b180a98/download/df_fuel_ckan.csv'
 

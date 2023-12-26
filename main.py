@@ -17,12 +17,18 @@ from json import loads, dumps
 import os, argparse, requests, shutil, datetime
 
 from lib.functions import aef, figure
+from tools.influx_writer import InfluxDBWriter
 
 # Import the config
 try:
 	from settings.config import odect_settings
 	key_knmi 	= odect_settings['api_knmi']
 	key_entsoe 	= odect_settings['api_entsoe']
+	
+	# Database
+	influx_host = odect_settings['influx_host']
+	influx_port = odect_settings['influx_port']
+	influx_db	= odect_settings['influx_db']
 except:
 	print("No valid config found! Please rename the config.py.example file to config.py and enter yourt API keys")
 	exit()
@@ -36,6 +42,7 @@ parser.add_argument('-s', '--start')
 parser.add_argument('-e', '--end') 
 parser.add_argument('-g', '--graphs', action='store_true') 
 parser.add_argument('-j', '--json', action='store_true') 
+parser.add_argument('-d', '--database', action='store_true') 
 parser.add_argument('--prune', action='store_true') 
 
 
@@ -111,5 +118,31 @@ if args.graphs:
 	
 # Dump JSON output if specified
 if args.json:
-	print(dumps(loads(aef.to_json()), indent=4))	
+	print(dumps(loads(aef.to_json()), indent=4))
+
+# Write to datacase if specified
+if args.database:
+	# Connect to the database
+	db = InfluxDBWriter(influx_db, influx_host, influx_port)
+	db.createDatabase()
+
+	# Retrieve the data
+	data = loads(aef.to_json())
+	for date, value in data['aef'].items():
+		# Prepare the data
+		measurement = "co2"
+		tags = {'country': 'NL', 'type': 'AEF'}
+		values = {'co2': float(value)}
+		
+		# Get the UTC timestamp
+		time = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
+		
+		# Send the data to the cache
+		db.appendValue(measurement, tags, values, time)
+		
+		# Write to the database as it will be caching anyway
+		db.writeData()
+		
+	# Force a last flush
+	db.writeData(True)
 
