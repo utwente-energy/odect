@@ -92,7 +92,15 @@ else:
 
 # Clear the data folder if specified
 if args.prune:
-	shutil.rmtree('data')
+	if not os.path.exists(folder):	# check if folder exists
+		os.makedirs(folder)	# make new folde
+		
+	# Clear all files, but do not delete folder
+	for root, dirs, files in os.walk('data'):
+		for f in files:
+			os.unlink(os.path.join(root, f))
+		for d in dirs:
+			shutil.rmtree(os.path.join(root, d))
 
 
 # Create folder to store data
@@ -119,6 +127,8 @@ if args.graphs:
 # Dump JSON output if specified
 if args.json:
 	print(dumps(loads(aef.to_json()), indent=4))
+	print(dumps(loads(gen.to_json()), indent=4))
+	
 
 # Write to datacase if specified
 if args.database:
@@ -127,6 +137,7 @@ if args.database:
 	db.createDatabase()
 
 	# Retrieve the data
+	# First we store the data for CO2 in general
 	data = loads(aef.to_json())
 	for date, value in data['aef'].items():
 		# Prepare the data
@@ -145,4 +156,96 @@ if args.database:
 		
 	# Force a last flush
 	db.writeData(True)
+	
+	
+	
+	# Then we store the EM per generator
+	data = loads(em.to_json())
+	for g in data.keys():
+		for date, value in data[g].items():
+			# Prepare the data
+			measurement = "co2"
+			tags = {'country': 'NL', 'type': 'generatortypes', 'generator': g.replace(" ", "_")}
+			values = {'co2': float(value)}
+			
+			# Get the UTC timestamp
+			time = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
+			
+			# Send the data to the cache
+			db.appendValue(measurement, tags, values, time)
+			
+			# Write to the database as it will be caching anyway
+			db.writeData()
+			
+		# Force a last flush
+		db.writeData(True)
+		
+		
+	# Then we store the MWh per generator
+	data = loads(gen.to_json())
+	for g in data.keys():
+		for date, value in data[g].items():
+			# Prepare the data
+			measurement = "co2"
+			tags = {'country': 'NL', 'type': 'generatortypes', 'generator': g.replace(" ", "_")}
+			values = {'MWh': float(value)}
+			
+			# Get the UTC timestamp
+			time = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
+			
+			# Send the data to the cache
+			db.appendValue(measurement, tags, values, time)
+			
+			# Write to the database as it will be caching anyway
+			db.writeData()
+			
+		# Force a last flush
+		db.writeData(True)
 
+
+	# Lastly we determine the percentage and total MWh of renewables:
+	# Renewables:
+	res = ['Other Renewable', 'Wind Offshore', 'PV', 'Hydropower', 'Wind Onshore']
+	total_d = {}
+	res_d = {}
+	
+	# Collecting the data
+	data = loads(gen.to_json())
+	for g in data.keys():
+		for date, value in data[g].items():
+			time = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
+		
+			# create counters
+			if time not in total_d:
+				total_d[time] = 0.0
+			if time not in res_d:
+				res_d[time] = 0.0
+				
+			if g in res:
+				res_d[time] += float(value)
+			total_d[time] += float(value)
+
+	for date, value in res_d.items():
+		# Calulcate the fraction
+		try:
+			frac = (float(value)/float(total_d[date]))*100
+		except:
+			frac = 0
+		
+		# Prepare the data
+		measurement = "co2"
+		tags = {'country': 'NL', 'type': 'renewables'}
+		values = {'MWh': float(value), 'percentage': frac}
+		
+		# Get the UTC timestamp
+		time = date
+		
+		
+		# Send the data to the cache
+		db.appendValue(measurement, tags, values, time)
+		
+		# Write to the database as it will be caching anyway
+		db.writeData()
+		
+	# Force a last flush
+	db.writeData(True)

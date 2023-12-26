@@ -250,13 +250,13 @@ def knmi_ir(y, m, d, h, tech, y2, m2, d2, h2, key_knmi):
 			
 		download_url = get_file_response.json().get("temporaryDownloadUrl")	 # fetch temporary download URL
 
-		if True: #try:
+		if try:
 			with requests.get(download_url, stream=True) as r:
 				r.raise_for_status()
 				with open(f'data/KNMI_Data/{filename}', "wb") as f:	# create new file in folder
 					for chunk in r.iter_content(chunk_size=8192):
 						f.write(chunk)	# write file per chunk
-		else: #except Exception:
+		except Exception:
 			print("Unable to download KNMI weather file using download URL")
 			sys.exit(1)
 		print(f'Weather data   NL	{y2}-{m2}-{d2} {h2}:00')
