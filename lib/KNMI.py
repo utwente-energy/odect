@@ -231,6 +231,8 @@ def knmi_ir(y, m, d, h, tech, y2, m2, d2, h2, key_knmi):
 	else:
 		get_file_response = requests.get(endpoint, headers={'Authorization': api_key})
 		if get_file_response.status_code != 200:  # check if status code is ok
+			print(get_file_response.status_code)
+			print(get_file_response.text)
 			print("Unable to retrieve KNMI download url for file. Adding zeroes")
 			
 			d = {'DR': [float("NAN")],  # calculate average irradiation in Drenthe
@@ -249,8 +251,9 @@ def knmi_ir(y, m, d, h, tech, y2, m2, d2, h2, key_knmi):
 			return dr
 			
 		download_url = get_file_response.json().get("temporaryDownloadUrl")	 # fetch temporary download URL
+		print(download_url)
 
-		if try:
+		try:
 			with requests.get(download_url, stream=True) as r:
 				r.raise_for_status()
 				with open(f'data/KNMI_Data/{filename}', "wb") as f:	# create new file in folder
