@@ -219,7 +219,7 @@ def knmi_ir(y, m, d, h, tech, y2, m2, d2, h2, key_knmi):
 	# fetching temporary Download URL
 	endpoint = f"{api_url}/{api_version}/datasets/{dataset_name}/versions/{dataset_version}/files/{filename}/url"
 
-	folder = 'data/KNMI_data'
+	folder = 'data/KNMI_Data'
 	if not os.path.exists(folder):	# check if folder exists
 	   os.makedirs(folder)	# make new folder
 
@@ -230,7 +230,6 @@ def knmi_ir(y, m, d, h, tech, y2, m2, d2, h2, key_knmi):
 		pass  # file exists, skip the download process
 	else:
 		get_file_response = requests.get(endpoint, headers={'Authorization': api_key})
-
 		if get_file_response.status_code != 200:  # check if status code is ok
 			print("Unable to retrieve KNMI download url for file. Adding zeroes")
 			
@@ -251,13 +250,13 @@ def knmi_ir(y, m, d, h, tech, y2, m2, d2, h2, key_knmi):
 			
 		download_url = get_file_response.json().get("temporaryDownloadUrl")	 # fetch temporary download URL
 
-		try:
+		if True: #try:
 			with requests.get(download_url, stream=True) as r:
 				r.raise_for_status()
 				with open(f'data/KNMI_Data/{filename}', "wb") as f:	# create new file in folder
 					for chunk in r.iter_content(chunk_size=8192):
 						f.write(chunk)	# write file per chunk
-		except Exception:
+		else: #except Exception:
 			print("Unable to download KNMI weather file using download URL")
 			sys.exit(1)
 		print(f'Weather data   NL	{y2}-{m2}-{d2} {h2}:00')

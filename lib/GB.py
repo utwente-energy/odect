@@ -27,7 +27,7 @@ def fetch_gb_generation(date):
 	date_str = f'{year}-{month}-{day} 00:00'
 	filename = 'data/Database_GB_Generation.csv'
 	exists = os.path.exists(filename)
-
+	
 	if exists:	# Check if Database_GB_Generation.csv is present
 		pass  # Do nothing
 	else:
@@ -42,9 +42,13 @@ def fetch_gb_generation(date):
 
 	df = pd.read_csv(filename)
 	try:
-		df['DATETIME'] = pd.to_datetime(df['DATETIME'], format='%Y-%m-%d %H:%M:%S+00:00')  # change column into datetime
+		df['DATETIME'] = pd.to_datetime(df['DATETIME'], format='%Y-%m-%dT%H:%M:%S')	# change column into datetime
 	except:
-		df['DATETIME'] = pd.to_datetime(df['DATETIME'], format='%Y-%m-%d %H:%M:%S+00')	# change column into datetime
+		try:
+			df['DATETIME'] = pd.to_datetime(df['DATETIME'], format='%Y-%m-%d %H:%M:%S+00:00')  # change column into datetime #df['DATETIME'] = pd.to_datetime(df['DATETIME'], format='%Y-%m-%dT%H:%M:%S')	# change column into datetime
+		except:
+			df['DATETIME'] = pd.to_datetime(df['DATETIME'], format='%Y-%m-%d %H:%M:%S+00')	# change column into datetime
+			
 	df['DATETIME'] = df['DATETIME'].dt.strftime('%Y-%m-%d %H:%M%z')  # change datetime format
 
 	if date_str in df.DATETIME.values:	# check if date_str is already present in the database file
@@ -52,8 +56,9 @@ def fetch_gb_generation(date):
 	else:  # download new file
 		print('Downloading British generation data')
 		url = 'https://data.nationalgrideso.com/backend/dataset/88313ae5-94e4-4ddc-a790-593554d8c6b9/resource/f93d1835-75bc-43e5-84ad-12472b180a98/download/df_fuel_ckan.csv'
+
 		response = requests.get(url)
-		with open(filename, 'w') as f:
+		with open(filename, 'w+') as f:
 			writer = csv.writer(f)
 			for line in response.iter_lines():
 				writer.writerow(line.decode('utf-8').split(','))

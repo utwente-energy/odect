@@ -35,11 +35,6 @@ def fetch_generation(date, zone_code, key_entsoe):
     y = date.astimezone(dt.timezone.utc).strftime('%Y')
     m = date.astimezone(dt.timezone.utc).strftime('%m')
     d = date.astimezone(dt.timezone.utc).strftime('%d')
-
-    date_min1 = date - dt.timedelta(days=1)
-    y_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%Y')
-    m_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%m')
-    d_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%d')
 	
     date_plus1 = date + dt.timedelta(days=1)
     y_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%Y')
@@ -184,11 +179,6 @@ def fetch_import(date, key_entsoe):
     y = date.astimezone(dt.timezone.utc).strftime('%Y')
     m = date.astimezone(dt.timezone.utc).strftime('%m')
     d = date.astimezone(dt.timezone.utc).strftime('%d')
-
-    date_min1 = date - dt.timedelta(days=1)
-    y_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%Y')
-    m_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%m')
-    d_m1 = date_min1.astimezone(dt.timezone.utc).strftime('%d')
 	
     date_plus1 = date + dt.timedelta(days=1)
     y_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%Y')
@@ -197,8 +187,6 @@ def fetch_import(date, key_entsoe):
 
     per_start = f'{y}{m}{d}0000'
     per_end = f'{y_p1}{m_p1}{d_p1}0000'
-
-    print(per_start, per_end)
 
     dom_list = ['10YGB----------A',  # Great-Britain
                 '10YBE----------2',  # Belgium

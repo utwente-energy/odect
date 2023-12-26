@@ -17,5 +17,5 @@
 odect_settings = {
 	'api_knmi': 	'<your API key here>', 				# personal security token of KNMI 		https://developer.dataplatform.knmi.nl/get-started#obtain-an-api-key
 	'api_entsoe':	'<your ENTSO-E API Key here>',		# personal security token of ENTSO-e 	https://transparency.entsoe.eu/content/static_content/download?path=/Static%20content/API-Token-Management.pdf
-	'n_day':		3, 									# Default days to download data for if no range is specified
+	'n_days':		3, 									# Default days to download data for if no range is specified
 	}
