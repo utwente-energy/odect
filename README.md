@@ -30,7 +30,7 @@ Install the dependencies: python -m pip install -r requirements.txt
 
 Copy the template settings.py.example and rename into settings.py. Then insert personal API keys for ENTSO-e and KNMI databases in settings/config.py.
 
-## Running
+## Running ODECT
 
 The software can be run by executing main.py with the following flags:
 
@@ -48,6 +48,21 @@ Usage example:
 ```
 python main.py -s 20230314 -e 20231212 -g
 ```
+
+
+## Docker
+
+A DockerFile and example docker-compose files are provided to create a docker image. The container can be build and started as follows:
+```
+docker build -t odect .
+```
+
+After succesful building, copy the example docker-compose.yaml.example file and rename to docker-compose.yaml. Enter your API keys and deploy using the following command:
+
+```
+docker-compose up -d 
+```
+Embedding this in your own docker-compose file, including a Grafana service and InfluxDB 1.x service is encouraged.
 
 
 ## License

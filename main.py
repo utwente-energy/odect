@@ -14,7 +14,7 @@
 
 import pandas as pd
 from json import loads, dumps
-import os, argparse, requests, shutil, datetime
+import os, argparse, requests, shutil, datetime, time
 
 from lib.functions import aef, figure
 from tools.influx_writer import InfluxDBWriter
@@ -91,6 +91,7 @@ else:
 
 
 # Clear the data folder if specified
+folder = 'data/'
 if args.prune:
 	if not os.path.exists(folder):	# check if folder exists
 		os.makedirs(folder)	# make new folde
@@ -104,7 +105,6 @@ if args.prune:
 
 
 # Create folder to store data
-folder = 'data/'
 if not os.path.exists(folder):	# check if folder exists
 	os.makedirs(folder)	# make new folde
 
@@ -134,8 +134,11 @@ if args.json:
 if args.database:
 	# Connect to the database
 	db = InfluxDBWriter(influx_db, influx_host, influx_port)
+	# db.clearDatabase()
 	db.createDatabase()
-
+	
+	res = ['Other Renewable', 'Wind Offshore', 'PV', 'Hydropower', 'Wind Onshore', 'Geothermal', "Ocean energy"]
+	
 	# Retrieve the data
 	# First we store the data for CO2 in general
 	data = loads(aef.to_json())
@@ -146,13 +149,14 @@ if args.database:
 		values = {'co2': float(value)}
 		
 		# Get the UTC timestamp
-		time = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
+		ts = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
 		
-		# Send the data to the cache
-		db.appendValue(measurement, tags, values, time)
-		
-		# Write to the database as it will be caching anyway
-		db.writeData()
+		if int(time.time())-2*3600 > ts:
+			# Send the data to the cache
+			db.appendValue(measurement, tags, values, ts)
+			
+			# Write to the database as it will be caching anyway
+			db.writeData()
 		
 	# Force a last flush
 	db.writeData(True)
@@ -165,18 +169,22 @@ if args.database:
 		for date, value in data[g].items():
 			# Prepare the data
 			measurement = "co2"
-			tags = {'country': 'NL', 'type': 'generatortypes', 'generator': g.replace(" ", "_")}
+			if g in res:
+				tags = {'country': 'NL', 'pollution': 'no', 'type': 'generators', 'generator': g.replace(" ", "_")}
+			else:
+				tags = {'country': 'NL', 'pollution': 'yes', 'type': 'generators', 'generator': g.replace(" ", "_")}
 			values = {'co2': float(value)}
 			
 			# Get the UTC timestamp
-			time = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
+			ts = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
 			
-			# Send the data to the cache
-			db.appendValue(measurement, tags, values, time)
-			
-			# Write to the database as it will be caching anyway
-			db.writeData()
-			
+			if int(time.time())-2*3600 > ts:
+				# Send the data to the cache
+				db.appendValue(measurement, tags, values, ts)
+				
+				# Write to the database as it will be caching anyway
+				db.writeData()
+				
 		# Force a last flush
 		db.writeData(True)
 		
@@ -187,25 +195,28 @@ if args.database:
 		for date, value in data[g].items():
 			# Prepare the data
 			measurement = "co2"
-			tags = {'country': 'NL', 'type': 'generatortypes', 'generator': g.replace(" ", "_")}
+			if g in res:
+				tags = {'country': 'NL', 'pollution': 'no', 'type': 'generators', 'generator': g.replace(" ", "_")}
+			else:
+				tags = {'country': 'NL', 'pollution': 'yes', 'type': 'generators', 'generator': g.replace(" ", "_")}
 			values = {'MWh': float(value)}
 			
 			# Get the UTC timestamp
-			time = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
+			ts = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
 			
-			# Send the data to the cache
-			db.appendValue(measurement, tags, values, time)
-			
-			# Write to the database as it will be caching anyway
-			db.writeData()
-			
+			if int(time.time())-2*3600 > ts:
+				# Send the data to the cache
+				db.appendValue(measurement, tags, values, ts)
+				
+				# Write to the database as it will be caching anyway
+				db.writeData()
+				
 		# Force a last flush
 		db.writeData(True)
 
 
 	# Lastly we determine the percentage and total MWh of renewables:
 	# Renewables:
-	res = ['Other Renewable', 'Wind Offshore', 'PV', 'Hydropower', 'Wind Onshore']
 	total_d = {}
 	res_d = {}
 	
@@ -213,17 +224,17 @@ if args.database:
 	data = loads(gen.to_json())
 	for g in data.keys():
 		for date, value in data[g].items():
-			time = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
+			ts = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
 		
 			# create counters
-			if time not in total_d:
-				total_d[time] = 0.0
-			if time not in res_d:
-				res_d[time] = 0.0
+			if ts not in total_d:
+				total_d[ts] = 0.0
+			if ts not in res_d:
+				res_d[ts] = 0.0
 				
 			if g in res:
-				res_d[time] += float(value)
-			total_d[time] += float(value)
+				res_d[ts] += float(value)
+			total_d[ts] += float(value)
 
 	for date, value in res_d.items():
 		# Calulcate the fraction
@@ -238,14 +249,14 @@ if args.database:
 		values = {'MWh': float(value), 'percentage': frac}
 		
 		# Get the UTC timestamp
-		time = date
+		ts = date
 		
-		
-		# Send the data to the cache
-		db.appendValue(measurement, tags, values, time)
-		
-		# Write to the database as it will be caching anyway
-		db.writeData()
-		
+		if int(time.time())-2*3600 > ts:
+			# Send the data to the cache
+			db.appendValue(measurement, tags, values, ts)
+			
+			# Write to the database as it will be caching anyway
+			db.writeData()
+			
 	# Force a last flush
 	db.writeData(True)

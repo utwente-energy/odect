@@ -16,7 +16,7 @@
 FROM python:3.11.2-bullseye
 
 # Install packages
-RUN apt-get update && apt-get -y python3-dev install libhdf5-serial-dev netcdf-bin libnetcdf-dev
+RUN apt-get update && apt-get -y install python3-dev libhdf5-serial-dev netcdf-bin libnetcdf-dev cron
 
 COPY requirements.txt . 
 RUN pip install -r requirements.txt
@@ -32,7 +32,15 @@ RUN mkdir /app/odect/data
 RUN mkdir /app/odect/settings
 
 # Copy the Docker config
-RUN cp -f docker/config.py /app/odect/settings
+COPY docker/config.py /app/odect/settings
+
+# Copy other relevant files
+COPY settings/Emission_Factors.csv /app/odect/settings
+
+# Copy the shell script
+COPY docker/cronexec.sh /app/odect
+RUN chmod 0644 /app/odect/cronexec.sh
+RUN chmod +x /app/odect/cronexec.sh
 
 # Add volumes
 VOLUME /app/odect/data
@@ -54,5 +62,19 @@ ENV PYTHONPATH=/usr/lib/python3.11/site-packages
 
 EXPOSE 3001
 
-# Run app.py when the container launches
-# CMD sh /scripts/autoexec.sh
+
+# Create the log file to be able to run tail
+# RUN touch /var/log/cron.log
+
+# Add the cron job
+# RUN (crontab -l ; echo "* * * * * bash /app/odect/cronexec.sh >> /var/log/cron.log") | crontab
+
+# Run the command on container startup
+# CMD cron && tail -f /var/log/cron.log
+
+COPY docker/crontab /etc/cron.d/crontab
+RUN chmod 0644 /etc/cron.d/crontab
+RUN /usr/bin/crontab /etc/cron.d/crontab
+
+# run crond as main process of container
+CMD ["cron", "-f"]

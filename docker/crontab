@@ -1,0 +1,3 @@
+# START CRON JOB
+* * * * * python3 /app/odect/main.py -e 20231220 -s 20231220 -j > /proc/1/fd/1 2>/proc/1/fd/2
+# END CRON JOB

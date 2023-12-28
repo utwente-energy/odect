@@ -251,7 +251,6 @@ def knmi_ir(y, m, d, h, tech, y2, m2, d2, h2, key_knmi):
 			return dr
 			
 		download_url = get_file_response.json().get("temporaryDownloadUrl")	 # fetch temporary download URL
-		print(download_url)
 
 		try:
 			with requests.get(download_url, stream=True) as r:
