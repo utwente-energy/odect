@@ -62,19 +62,26 @@ ENV PYTHONPATH=/usr/lib/python3.11/site-packages
 
 EXPOSE 3001
 
+# Run app.py when the container launches
+# CMD sh /scripts/autoexec.sh
+# CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
 
 # Create the log file to be able to run tail
-# RUN touch /var/log/cron.log
+RUN touch /var/log/cron.log
 
 # Add the cron job
-# RUN (crontab -l ; echo "* * * * * bash /app/odect/cronexec.sh >> /var/log/cron.log") | crontab
+#RUN crontab -l | { cat; echo "* * * * * bash /app/odect/cronexec.sh"; } | crontab -
+#RUN (crontab -l ; echo "* * * * * echo "Running ODECT" >> /var/log/cron.log") | crontab
+#RUN (crontab -l ; echo "* * * * * bash /app/odect/cronexec.sh >> /var/log/cron.log") | crontab
 
 # Run the command on container startup
-# CMD cron && tail -f /var/log/cron.log
+#CMD cron && tail -f /var/log/cron.log
+#CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
 
-COPY docker/crontab /etc/cron.d/crontab
-RUN chmod 0644 /etc/cron.d/crontab
-RUN /usr/bin/crontab /etc/cron.d/crontab
 
-# run crond as main process of container
-CMD ["cron", "-f"]
+# Setting the python path
+ENV PYTHONPATH=/usr/lib/python3.11/site-packages
+
+ENV PATH "$PATH:/scripts"
+
+CMD sh /app/odect/cronexec.sh
