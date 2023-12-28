@@ -1,3 +1,4 @@
-echo "Hello World"
+echo "Running ODECT"
 cd /app/odect
-python main.py -e 20231220 -s 20231220 -j
+/usr/local/bin/python3.11 main.py -d --prune
+echo "Finished ODECT run"

@@ -58,30 +58,12 @@ ENV ODECT_INFLUXDB=odect
 # Setting the python path
 ENV PYTHONPATH=/usr/lib/python3.11/site-packages
 
-# ENV PATH "$PATH:/scripts"
-
 EXPOSE 3001
-
-# Run app.py when the container launches
-# CMD sh /scripts/autoexec.sh
-# CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
 
 # Create the log file to be able to run tail
 RUN touch /var/log/cron.log
 
 # Add the cron job
-#RUN crontab -l | { cat; echo "* * * * * bash /app/odect/cronexec.sh"; } | crontab -
-#RUN (crontab -l ; echo "* * * * * echo "Running ODECT" >> /var/log/cron.log") | crontab
-#RUN (crontab -l ; echo "* * * * * bash /app/odect/cronexec.sh >> /var/log/cron.log") | crontab
+RUN (crontab -l ; echo "15 * * * * bash /app/odect/cronexec.sh >> /var/log/cron.log") | crontab
 
-# Run the command on container startup
-#CMD cron && tail -f /var/log/cron.log
-#CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
-
-
-# Setting the python path
-ENV PYTHONPATH=/usr/lib/python3.11/site-packages
-
-ENV PATH "$PATH:/scripts"
-
-CMD sh /app/odect/cronexec.sh
+CMD env >> /etc/environment && cron && tail -f /var/log/cron.log
