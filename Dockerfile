@@ -64,6 +64,6 @@ EXPOSE 3001
 RUN touch /var/log/cron.log
 
 # Add the cron job
-RUN (crontab -l ; echo "45 * * * * bash /app/odect/cronexec.sh >> /var/log/cron.log") | crontab
+RUN (crontab -l ; echo "40 * * * * bash /app/odect/cronexec.sh >> /var/log/cron.log") | crontab
 
 CMD env >> /etc/environment && cron && tail -f /var/log/cron.log
