@@ -73,7 +73,6 @@ def fetch_gb_generation(date):
 					ts = int(dt.datetime.strptime(l[0]+"Z", '%Y-%m-%dT%H:%M:%S%z').timestamp())
 					if ts > last_time:
 						writer.writerow(l)
-						print(l)
 						last_time = ts
 
 	gb_gen = pd.DataFrame()	 # initiate empty dataframe
