@@ -151,7 +151,7 @@ if args.database:
 		# Get the UTC timestamp
 		ts = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
 		
-		if int(time.time())-5400 > ts:
+		if int(time.time())-1800 > ts:
 			# Send the data to the cache
 			db.appendValue(measurement, tags, values, ts)
 			
@@ -178,7 +178,7 @@ if args.database:
 			# Get the UTC timestamp
 			ts = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
 			
-			if int(time.time())-5400 > ts:
+			if int(time.time())-1800 > ts:
 				# Send the data to the cache
 				db.appendValue(measurement, tags, values, ts)
 				
@@ -204,7 +204,7 @@ if args.database:
 			# Get the UTC timestamp
 			ts = int(datetime.datetime.timestamp(datetime.datetime.strptime(date+"+00:00", '%Y-%m-%d %H:%M%z')))
 			
-			if int(time.time())-5400 > ts:
+			if int(time.time())-1800 > ts:
 				# Send the data to the cache
 				db.appendValue(measurement, tags, values, ts)
 				
@@ -251,7 +251,7 @@ if args.database:
 		# Get the UTC timestamp
 		ts = date
 		
-		if int(time.time())-5400 > ts:
+		if int(time.time())-1800 > ts:
 			# Send the data to the cache
 			db.appendValue(measurement, tags, values, ts)
 			

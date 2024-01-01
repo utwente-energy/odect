@@ -70,10 +70,20 @@ def fetch_gb_generation(date):
 					first_line = False
 					writer.writerow(l)
 				else:
-					ts = int(dt.datetime.strptime(l[0]+"Z", '%Y-%m-%dT%H:%M:%S%z').timestamp())
-					if ts > last_time:
-						writer.writerow(l)
-						last_time = ts
+					try:
+						ts = int(dt.datetime.strptime(l[0], '%Y-%m-%d %H:%M:%S%z').timestamp())
+					except:
+						try:
+							ts = int(dt.datetime.strptime(l[0]+"Z", '%Y-%m-%dT%H:%M:%S%z').timestamp())
+						except:
+							pass
+						
+					try:
+						if ts > last_time:
+							writer.writerow(l)
+							last_time = ts
+					except:
+						pass
 
 	gb_gen = pd.DataFrame()	 # initiate empty dataframe
 
