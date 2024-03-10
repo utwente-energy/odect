@@ -83,4 +83,4 @@ It is the user's responsibility to ensure that the use of external software and 
 ## Contact
 In case of any ODECT related questions, please reach out to us:
 
-[Bas Jansen](https://www.linkedin.com/in/b-j-jansen/) and [Gerwin Hoogsteen] (https://people.utwente.nl/g.hoogsteen)
+[Bas Jansen](https://www.linkedin.com/in/b-j-jansen/) and [Gerwin Hoogsteen](https://people.utwente.nl/g.hoogsteen)
