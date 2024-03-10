@@ -78,9 +78,6 @@ RUN touch /var/log/cron.log
 
 # Add the cron job
 RUN (crontab -l ; echo "40 * * * * bash /app/odect/cronexec.sh >> /var/log/cron.log") | crontab
-<<<<<<< HEAD
 RUN (crontab -l ; echo "5 * * * * bash /app/odect/cronforecast.sh >> /var/log/cron.log") | crontab
-=======
->>>>>>> origin
 
 CMD env >> /etc/environment && cron && tail -f /var/log/cron.log
