@@ -27,6 +27,14 @@ WORKDIR /app/odect
 COPY main.py /app/odect
 COPY lib /app/odect/lib
 COPY tools /app/odect/tools
+COPY get_historicweather.py /app/odect
+COPY get_tsoinfo.py /app/odect
+COPY get_weatherforecast.py /app/odect
+
+COPY forecast_co2.py /app/odect
+COPY forecast_prices.py /app/odect
+
+COPY training /app/odect/training
 
 RUN mkdir /app/odect/data
 RUN mkdir /app/odect/settings
@@ -42,8 +50,13 @@ COPY docker/cronexec.sh /app/odect
 RUN chmod 0644 /app/odect/cronexec.sh
 RUN chmod +x /app/odect/cronexec.sh
 
+COPY docker/cronforecast.sh /app/odect
+RUN chmod 0644 /app/odect/cronforecast.sh
+RUN chmod +x /app/odect/cronforecast.sh
+
 # Add volumes
 VOLUME /app/odect/data
+VOLUME /app/odect/training
 
 # Set the default environment variables
 ENV ODECT_API_KNMI=example
@@ -64,6 +77,7 @@ EXPOSE 3001
 RUN touch /var/log/cron.log
 
 # Add the cron job
-RUN (crontab -l ; echo "45 * * * * bash /app/odect/cronexec.sh >> /var/log/cron.log") | crontab
+RUN (crontab -l ; echo "40 * * * * bash /app/odect/cronexec.sh >> /var/log/cron.log") | crontab
+RUN (crontab -l ; echo "5 * * * * bash /app/odect/cronforecast.sh >> /var/log/cron.log") | crontab
 
 CMD env >> /etc/environment && cron && tail -f /var/log/cron.log

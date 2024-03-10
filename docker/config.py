@@ -17,11 +17,13 @@
 import os
 
 odect_settings = {
-	'api_knmi': 	str(os.environ['ODECT_API_KNMI']), 				# personal security token of KNMI 		https://developer.dataplatform.knmi.nl/get-started#obtain-an-api-key
-	'api_entsoe':	str(os.environ['ODECT_API_ENTSOE']),				# personal security token of ENTSO-e 	https://transparency.entsoe.eu/content/static_content/download?path=/Static%20content/API-Token-Management.pdf
-	'n_days':		int(str(os.environ['ODECT_N_DAYS'])), 				# Default days to download data for if no range is specified
+	'api_knmi': 		str(os.environ['ODECT_API_KNMI']), 			# personal security token of KNMI 			https://developer.dataplatform.knmi.nl/get-started#obtain-an-api-key
+	'api_entsoe':		str(os.environ['ODECT_API_ENTSOE']),		# personal security token of ENTSO-e 		https://transparency.entsoe.eu/content/static_content/download?path=/Static%20content/API-Token-Management.pdf
+	'api_owm':			str(os.environ['ODECT_API_OWM']),			# personal security token of OpenWeatherMap	https://openweathermap.org/appid
+	'user_agent_yr':	str(os.environ['ODECT_UA_YR']),				# Yr.no user agent, can be custom, see https://developer.yr.no/doc/locationforecast/HowTO/
+	'n_days':			int(str(os.environ['ODECT_N_DAYS'])), 		# Default days to download data for if no range is specified
 	
-	'influx_host': 	str(os.environ['ODECT_INFLUXURL']),				# InfluxDB Host, NOTE: Only Inxludb 1.x is supported at this moment
-	'influx_port': 	str(os.environ['ODECT_INFLUXPORT']),				# InfluxDB Port, default is 8086
-	'influx_db': 	str(os.environ['ODECT_INFLUXDB'])				# Database to write to
+	'influx_host': 		str(os.environ['ODECT_INFLUXURL']),			# InfluxDB Host, NOTE: Only Inxludb 1.x is supported at this moment
+	'influx_port': 		str(os.environ['ODECT_INFLUXPORT']),		# InfluxDB Port, default is 8086
+	'influx_db': 		str(os.environ['ODECT_INFLUXDB'])			# Database to write to
 	}

@@ -15,11 +15,13 @@
 # File that contains settigns for ODECT
 
 odect_settings = {
-	'api_knmi': 	'<your API key here>', 				# personal security token of KNMI 		https://developer.dataplatform.knmi.nl/get-started#obtain-an-api-key
-	'api_entsoe':	'<your ENTSO-E API Key here>',		# personal security token of ENTSO-e 	https://transparency.entsoe.eu/content/static_content/download?path=/Static%20content/API-Token-Management.pdf
-	'n_days':		3, 									# Default days to download data for if no range is specified
+	'api_knmi': 	'<your API key here>', 					# personal security token of KNMI 				https://developer.dataplatform.knmi.nl/get-started#obtain-an-api-key
+	'api_entsoe':	'<your ENTSO-E API Key here>',			# personal security token of ENTSO-e 			https://transparency.entsoe.eu/content/static_content/download?path=/Static%20content/API-Token-Management.pdf
+	'api_owm': 		'<your OpenWeatherMap API Key here>',	# personal security token of OpenWeatherMap		https://openweathermap.org/api
+	'user_agent_yr': '<Your user agent for Yr.no>'			# Yr.no user agent, can be custom, see https://developer.yr.no/doc/locationforecast/HowTO/
+	'n_days':		3, 										# Default days to download data for if no range is specified
 	
-	'influx_host': 	'http://localhost',					# InfluxDB Host, NOTE: Only Inxludb 1.x is supported at this moment
-	'influx_port': 	'8086',								# InfluxDB Port, default is 8086
-	'influx_db': 	'odect'								# Database to write to
+	'influx_host': 	'http://localhost',						# InfluxDB Host, NOTE: Only Inxludb 1.x is supported at this moment
+	'influx_port': 	'8086',									# InfluxDB Port, default is 8086
+	'influx_db': 	'odect'									# Database to write to
 	}

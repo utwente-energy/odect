@@ -7,3 +7,9 @@ netCDF4
 lxml
 argparse
 pytz
+entsoe-py
+pvlib
+joblib
+scikit-learn
+tensorflow
+keras

@@ -51,32 +51,32 @@ def fetch_wind(date, key_knmi):
 	wind_df = df
 	wind_df.to_csv('data/wind_df.csv')
 
-	cap_onshore = {'DR': [222],	 # capacity of onshore wind turbines in MW https://opendata.cbs.nl/#/CBS/nl/dataset/70960ned/table
-				   'FL': [1351],
-				   'FR': [581],
-				   'GD': [171],
-				   'GR': [734],
-				   'LB': [72],
-				   'NB': [300],
-				   'NH': [668],
+	cap_onshore = {'DR': [246],	 # capacity of onshore wind turbines in MW https://opendata.cbs.nl/#/CBS/nl/dataset/70960ned/table
+				   'FL': [1609],
+				   'FR': [618],
+				   'GD': [235],
+				   'GR': [842],
+				   'LB': [114],
+				   'NB': [346],
+				   'NH': [707],
 				   'OV': [74],
 				   'UT': [34],
-				   'ZL': [567],
-				   'ZH': [535]}
+				   'ZL': [570],
+				   'ZH': [790]}
 	wind_cap = pd.DataFrame(data=cap_onshore)  # fit capacity data to dataframe
 
-	rot_onshore = {'DR': [847000],	# rotor area of onshore wind turbines in m2 https://opendata.cbs.nl/#/CBS/nl/dataset/70960ned/table
-				   'FL': [3724000],
-				   'FR': [1951000],
-				   'GD': [608000],
-				   'GR': [2194000],
-				   'LB': [277000],
-				   'NB': [974000],
-				   'NH': [2129000],
-				   'OV': [230000],
-				   'UT': [131000],
-				   'ZL': [1721000],
-				   'ZH': [1640000]}
+	rot_onshore = {'DR': [824000],	# rotor area of onshore wind turbines in m2 https://opendata.cbs.nl/#/CBS/nl/dataset/70960ned/table
+				   'FL': [4291000],
+				   'FR': [1802000],
+				   'GD': [711000],
+				   'GR': [2245000],
+				   'LB': [367000],
+				   'NB': [996000],
+				   'NH': [1945000],
+				   'OV': [198000],
+				   'UT': [113000],
+				   'ZL': [1512000],
+				   'ZH': [2206000]}
 	wind_rotor = pd.DataFrame(data=rot_onshore)	 # fit capacity data to dataframe
 
 	air_density = 1.246	 # kg/m3
@@ -145,46 +145,46 @@ def fetch_pv(date, key_knmi):
 	pv_irr.to_csv('data/pv_irr.csv')
 
 	# set installed PV capacity per province [MWp]
-	cap_total = {'DR': [1065],
-				 'FL': [636],
-				 'FR': [948],
-				 'GD': [2240],
-				 'GR': [1233],
-				 'LB': [1318],
-				 'NB': [2991],
-				 'NH': [1624],
-				 'OV': [1465],
-				 'UT': [880],
-				 'ZL': [670],
-				 'ZH': [1785]}
+	cap_total = {'DR': [1519],
+				 'FL': [1090],
+				 'FR': [1149],
+				 'GD': [2866],
+				 'GR': [1567],
+				 'LB': [1728],
+				 'NB': [3814],
+				 'NH': [2112],
+				 'OV': [1832],
+				 'UT': [1199],
+				 'ZL': [866],
+				 'ZH': [2640]}
 	pv_cap = pd.DataFrame(data=cap_total)  # fit capacity data to dataframe
 
-	cap_roof = {'DR': [512],
-				'FL': [440],
-				'FR': [696],
-				'GD': [1881],
-				'GR': [543],
-				'LB': [1233],
-				'NB': [2708],
-				'NH': [1424],
-				'OV': [1178],
-				'UT': [792],
-				'ZL': [406],
-				'ZH': [1612]}
+	cap_roof = {'DR': [706],
+				'FL': [667],
+				'FR': [895],
+				'GD': [2478],
+				'GR': [752],
+				'LB': [1611],
+				'NB': [3499],
+				'NH': [1907],
+				'OV': [1526],
+				'UT': [1111],
+				'ZL': [546],
+				'ZH': [2452]}
 	cap_roof = pd.DataFrame(data=cap_roof)	# fit capacity data to dataframe
 
-	cap_field = {'DR': [553],
-				 'FL': [196],
-				 'FR': [252],
-				 'GD': [358],
-				 'GR': [689],
-				 'LB': [85],
-				 'NB': [282],
-				 'NH': [200],
-				 'OV': [288],
+	cap_field = {'DR': [813],
+				 'FL': [413],
+				 'FR': [254],
+				 'GD': [388],
+				 'GR': [815],
+				 'LB': [117],
+				 'NB': [315],
+				 'NH': [205],
+				 'OV': [306],
 				 'UT': [88],
-				 'ZL': [264],
-				 'ZH': [173]}
+				 'ZL': [320],
+				 'ZH': [188]}
 	cap_field = pd.DataFrame(data=cap_field)  # fit capacity data to dataframe
 
 	col = pv_irr.columns  # read columns from pv_irr

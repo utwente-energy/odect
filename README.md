@@ -65,6 +65,12 @@ docker-compose up -d
 Embedding this in your own docker-compose file, including a Grafana service and InfluxDB 1.x service is encouraged.
 
 
+## Forecasts
+
+Experimental code for training and using a Deep Recurrent Neural Network model is supplied for forecasts of electricity prices and CO2 emissions. Also pretrained models are supplied based on historical data. 
+The use of forecasts does require the use of an Influx 1.x database (2.x or higher are unsupported at the moment). Note that this code is not cleaned up and requires further developments, but it gives decent results.
+Note that you will need to create create a rather large database of historical data (since 2023) to be able to train the models. 
+
 ## License
 
 This software is made available under the Apache version 2.0 license: https://www.apache.org/licenses/LICENSE-2.0
@@ -75,6 +81,7 @@ which may be licenced under other licenses.
 It is the user's responsibility to ensure that the use of external software and libraries complies with any relevant licenses. A list of used Python libraries can be found in the requirements.txt file
 
 ## Contact
-In case of any ODECT related questions, please reach out to me:
+In case of any ODECT related questions, please reach out to us:
 
 [Bas Jansen](https://www.linkedin.com/in/b-j-jansen/)
+[Gerwin Hoogsteen] (https://people.utwente.nl/g.hoogsteen)

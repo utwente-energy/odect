@@ -9,6 +9,8 @@ services:
     environment:
       - ODECT_API_KNMI=here-your-knmi-api-key-without-quotes
       - ODECT_API_ENTSOE=here-your-entsoe-api-key-without-quotes
+      - ODECT_API_OWM=here-your-openweathermap-api-key-without-quotes
+      - ODECT_UA_YR=here-your-yr-user-agent-without-quotes
       - ODECT_N_DAYS=3
       - ODECT_INFLUXURL=http://odect_influx
       - ODECT_INFLUXPORT=8086
