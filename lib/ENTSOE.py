@@ -206,7 +206,8 @@ def fetch_import(date, key_entsoe):
                     out_dom = '10Y1001A1001A63L'
                 if int(per_end) >= 202108010000:
                     d_min = 15
-
+            if out_dom == '10YNO-2--------T':
+                d_min = 15
             if out_dom == '10YGB----------A': # Don't include GB for data before 1-1-2022 the data was hourly. Same for DE before 1-8-2021
                 if int(per_start) >=  202112312200:  # and date is 1-1-2022 or later
                     d_min = 15
