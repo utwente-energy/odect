@@ -35,7 +35,7 @@ def fetch_generation(date, zone_code, key_entsoe):
     y = date.astimezone(dt.timezone.utc).strftime('%Y')
     m = date.astimezone(dt.timezone.utc).strftime('%m')
     d = date.astimezone(dt.timezone.utc).strftime('%d')
-	
+
     date_plus1 = date + dt.timedelta(days=1)
     y_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%Y')
     m_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%m')
@@ -179,7 +179,7 @@ def fetch_import(date, key_entsoe):
     y = date.astimezone(dt.timezone.utc).strftime('%Y')
     m = date.astimezone(dt.timezone.utc).strftime('%m')
     d = date.astimezone(dt.timezone.utc).strftime('%d')
-	
+
     date_plus1 = date + dt.timedelta(days=1)
     y_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%Y')
     m_p1 = date_plus1.astimezone(dt.timezone.utc).strftime('%m')
@@ -211,7 +211,7 @@ def fetch_import(date, key_entsoe):
                 if int(per_start) >=  202112312200:  # and date is 1-1-2022 or later
                     d_min = 15
 
-            if out_dom == '10YNO-2--------T': # Don't include GB for data before 1-1-2022 the data was hourly. Same for NO before around june 2024 (chnged in retrosepect)
+            if out_dom == '10YNO-2--------T': # Don't include GB for data before 1-1-2022 the data was hourly. Same for NO before around june 2024 (changed in retrosepect)
                 if int(per_start) >=  202406122200:  # and date is 1-1-2022 or later
                     d_min = 15
 
@@ -225,7 +225,7 @@ def fetch_import(date, key_entsoe):
             # create dataframe from xml
             no_p = len(root[9][6].findall('{urn:iec62325.351:tc57wg16:451-3:publicationdocument:7:0}Point'))
             entry = pd.DataFrame(columns=[out_dom])
-            
+
             for a in range(2, (no_p + 2)):
                 # pos = root[9][6][a][0].text
                 qua = root[9][6][a][1].text
