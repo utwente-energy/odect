@@ -303,14 +303,15 @@ es = EarlyStopping(monitor = 'val_loss')
 cols = len(data_in.axes[1])
 
 
+
 for i in range(0, 10):
 	# FIXME: Hardcoded two datasets that somewhat work
 	if i <6:
 		X_train = si[:4200, :n_steps]
 		Y_train = so[:4200, :n_steps]
 	else:
-		X_train = si[4500:8000, :n_steps]
-		Y_train = so[4500:8000, :n_steps]
+		X_train = si[4500:(len(si)-7*24), :n_steps]
+		Y_train = so[4500:(len(so)-7*24), :n_steps]
 
 	model = keras.models.Sequential([
 		keras.layers.SimpleRNN(cols*4, return_sequences=True, input_shape=[None, cols]),		# timeintervals, features
@@ -320,7 +321,7 @@ for i in range(0, 10):
 
 
 
-	model.compile(loss="mape", optimizer="adam")
+	model.compile(loss="mae", optimizer="adam")
 	model.fit(X_train, Y_train, epochs=50, batch_size=48, validation_split=0) # validation_data=(X_valid, Y_valid))
 	
 	model.save('training/ml_prices_forecast_'+str(i)+'.keras')

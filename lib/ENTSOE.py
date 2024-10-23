@@ -207,9 +207,14 @@ def fetch_import(date, key_entsoe):
                 if int(per_end) >= 202108010000:
                     d_min = 15
 
-            if out_dom == '10YGB----------A': # Don't include GB for data before 1-1-2022 the data was hourly. Same for DE before 1-8-2021
+            if out_dom == '10YGB----------A': # Don't include GB for data before 1-1-2022 the data was hourly. Same for DE before 01-01-2022
                 if int(per_start) >=  202112312200:  # and date is 1-1-2022 or later
                     d_min = 15
+
+            if out_dom == '10YNO-2--------T': # Don't include GB for data before 1-1-2022 the data was hourly. Same for NO before around june 2024 (chnged in retrosepect)
+                if int(per_start) >=  202406122200:  # and date is 1-1-2022 or later
+                    d_min = 15
+
 
             link = f'{api_adress}securityToken={sec_token}&documentType={doc_type}&in_Domain={in_dom}&out_Domain={out_dom}&periodStart={per_start}&periodEnd={per_end}'
             # receive response and load xml

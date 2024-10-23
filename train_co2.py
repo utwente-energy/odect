@@ -312,7 +312,7 @@ for i in range(0, 10):
 
 
 
-	model.compile(loss="mape", optimizer="adam")
+	model.compile(loss="mae", optimizer="adam")
 	model.fit(X_train, Y_train, epochs=50, batch_size=48, validation_split=0) # validation_data=(X_valid, Y_valid))
 	
 	model.save('training/ml_co2_forecast_'+str(i)+'.keras')
