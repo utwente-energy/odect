@@ -207,25 +207,25 @@ avg_err = 0
 last_err = 0
 
 # We correct the CO2 emissions for recently observed trends
-try:
-	# actual data
-	measurement = 	"co2"									# Either: devices, controllers, host, flows
-	field = 		"co2"										# Field you'd like to read
-	condition = 	"\"type\" = 'AEF'"					# Name of the element you want to have the data of
-	r_real = influx_read(url, dbname, startTime, endTime, measurement, field, condition)
+# try:
+	# # actual data
+	# measurement = 	"co2"									# Either: devices, controllers, host, flows
+	# field = 		"co2"										# Field you'd like to read
+	# condition = 	"\"type\" = 'AEF'"					# Name of the element you want to have the data of
+	# r_real = influx_read(url, dbname, startTime, endTime, measurement, field, condition)
 
 
-	# add prices data to dataframe of a day before
-	measurement = 	"forecast"									# Either: devices, controllers, host, flows
-	field = 		"co2"										# Field you'd like to read
-	condition = 	"\"type\" = 'AEF'"					# Name of the element you want to have the data of
-	r_forecast = influx_read(url, dbname, startTime, endTime, measurement, field, condition)
+	# # add prices data to dataframe of a day before
+	# measurement = 	"forecast"									# Either: devices, controllers, host, flows
+	# field = 		"co2"										# Field you'd like to read
+	# condition = 	"\"type\" = 'AEF'"					# Name of the element you want to have the data of
+	# r_forecast = influx_read(url, dbname, startTime, endTime, measurement, field, condition)
 
 
-	avg_err = mean(r_real) - mean(r_forecast)
-	last_err = (r_real[-1] - r_forecast[-1]) - avg_err
-except:
-	pass
+	# avg_err = mean(r_real) - mean(r_forecast)
+	# last_err = (r_real[-1] - r_forecast[-1]) - avg_err
+# except:
+	# pass
 
 
 

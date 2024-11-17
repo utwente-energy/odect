@@ -141,6 +141,7 @@ if args.start is not None or args.end is not None:
 else:
 	# Time settings
 	start = datetime.datetime(2023, 1, 2, tzinfo=datetime.timezone.utc)
+	start = datetime.datetime(2024, 9, 28, tzinfo=datetime.timezone.utc)
 	end = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=7)
 
 
@@ -271,7 +272,6 @@ for el in weatherstations:
 data_in.reset_index(drop=True, inplace=True)
 data_out.reset_index(drop=True, inplace=True)
 
-
 scaler_in = MinMaxScaler()
 scaler_out = MinMaxScaler()
 
@@ -281,13 +281,8 @@ do = scaler_out.fit_transform(data_out.values)
 si =  np.array([di[i:i + (n_steps)].copy() for i in range(len(di) - (n_steps))])
 so =  np.array([do[i:i + (n_steps)].copy() for i in range(len(do) - (n_steps))])
 
-
-
-# The full dataset gives problems.
-# Instead we train 2 models aith a split in the dataset (see further downstream)
-# X_train = si[:, :n_steps]
-# Y_train = so[:, :n_steps]
-
+X_train = si[:(len(si)-7*24), :n_steps]
+Y_train = so[:(len(si)-7*24), :n_steps]
 
 # Save scalars
 joblib.dump(scaler_in , "training/scalar_in_prices_forecast") 
@@ -305,14 +300,6 @@ cols = len(data_in.axes[1])
 
 
 for i in range(0, 10):
-	# FIXME: Hardcoded two datasets that somewhat work
-	if i <6:
-		X_train = si[:4200, :n_steps]
-		Y_train = so[:4200, :n_steps]
-	else:
-		X_train = si[4500:(len(si)-7*24), :n_steps]
-		Y_train = so[4500:(len(so)-7*24), :n_steps]
-
 	model = keras.models.Sequential([
 		keras.layers.SimpleRNN(cols*4, return_sequences=True, input_shape=[None, cols]),		# timeintervals, features
 		keras.layers.SimpleRNN(cols*4, return_sequences=True),

@@ -141,6 +141,7 @@ if args.start is not None or args.end is not None:
 else:	
 	# Time settings
 	start = datetime.datetime(2023, 1, 2, tzinfo=datetime.timezone.utc)
+	start = datetime.datetime(2024, 9, 28, tzinfo=datetime.timezone.utc)
 	end = date = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=7)
 
 
