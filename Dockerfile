@@ -31,7 +31,7 @@ COPY get_historicweather.py /app/odect
 COPY get_tsoinfo.py /app/odect
 COPY get_weatherforecast.py /app/odect
 COPY train_prices.py /app/odect
-COPYU train_co2.py /app/odect
+COPY train_co2.py /app/odect
 
 COPY forecast_co2.py /app/odect
 COPY forecast_prices.py /app/odect
