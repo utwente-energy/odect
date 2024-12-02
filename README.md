@@ -12,13 +12,13 @@ transparency and openness. Hence we decided to make our efforts open source,
 such that society can fully benefit from and contribute to science. 
 We invite everybody to join us in this cause.
 
-## Knowledge resources
+## Knowledge Resources
 ODECT is developed as part of the master's thesis. 
 The thesis is openly available [here](https://essay.utwente.nl/96154/)
 
 ## How to cite
 When using ODECT for publications, please cite:
--   B. Jansen, "Modelling the dynamic greenhouse gas emission intensity of the Dutch electricity mix", Master's Thesis, Univeristy of Twente, Enschede, the Netherlands. Available [here](https://essay.utwente.nl/96154/)
+-   B. Jansen, "Modelling the dynamic greenhouse gas emission intensity of the Dutch electricity mix", Master's Thesis, University of Twente, Enschede, the Netherlands. Available [here](https://essay.utwente.nl/96154/)
 
 ## Installation
 
@@ -57,7 +57,7 @@ A DockerFile and example docker-compose files are provided to create a docker im
 docker build -t odect .
 ```
 
-After succesful building, copy the example docker-compose.yaml.example file and rename to docker-compose.yaml. Enter your API keys and deploy using the following command:
+After successful building, copy the example docker-compose.yaml.example file and rename to docker-compose.yaml. Enter your API keys and deploy using the following command:
 
 ```
 docker-compose up -d 
@@ -71,7 +71,7 @@ This software is made available under the Apache version 2.0 license: https://ww
 
 The software depends on external software and libraries. 
 These external packages are likely to contain other software 
-which may be licenced under other licenses. 
+which may be licensed under other licenses. 
 It is the user's responsibility to ensure that the use of external software and libraries complies with any relevant licenses. A list of used Python libraries can be found in the requirements.txt file
 
 ## Contact
