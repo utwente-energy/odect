@@ -78,3 +78,10 @@ It is the user's responsibility to ensure that the use of external software and 
 In case of any ODECT related questions, please reach out to me:
 
 [Bas Jansen](https://www.linkedin.com/in/b-j-jansen/)
+
+## Acknowledgements
+
+The development and maintenance of this software is made possible through the funding from several research projects:
+
+- This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 101022587 (SUSTENANCE).
+- This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 957682 (SERENE).
